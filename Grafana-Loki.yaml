@@ -1,5 +1,9 @@
 version: "3"
 
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+
 networks:
   loki:
 
@@ -60,4 +64,4 @@ services:
     restart: unless-stopped
     volumes:
       - ./prometheus:/etc/prometheus
-      - prom_data:/prometheus
+      - prometheus_data:/prometheus
