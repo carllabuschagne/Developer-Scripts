@@ -1,14 +1,7 @@
 version: "3"
 
 services:
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    ports:
-      - "6831:6831/udp"
-      - "16686:16686"
-    networks:
-      - elastic-jaeger
-      
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
     networks:
@@ -98,7 +91,7 @@ services:
     networks:
       - elastic-jaeger
     depends_on:
-      - jaeger
+      - jaeger-agent
 
 volumes:
   esdata:
