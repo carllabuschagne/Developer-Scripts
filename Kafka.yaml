@@ -80,7 +80,7 @@ services:
       AUTH_TYPE: DISABLED
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:29092
-      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zoo1:2181
       DYNAMIC_CONFIG_ENABLED: 'true'
     depends_on:
       - kafka1
