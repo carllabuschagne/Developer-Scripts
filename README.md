@@ -131,7 +131,7 @@ public class CoreModel
 
 <br/>
 
-## :dart: API Endpoints
+## :dart: API
 
 <div align="center">
   <img src="WaybillRevenueService/Content/Logs.png" alt="logo" width="99%" style='border-radius: 5px;' height="auto" />
