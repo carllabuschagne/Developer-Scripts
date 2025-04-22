@@ -1,0 +1,21 @@
+version: "3.9"
+name: iox-stack
+services:
+  redis:
+    container_name: 'iox-redis-stack'
+    image: 'redis/redis-stack'
+    volumes:
+      - './redis:/var/lib/redis'
+    ports:
+      - '6379:6379'
+      - '8001:8001'
+    restart: 'unless-stopped'
+    
+  pubsub_emulator:
+    container_name: 'iox-gcloud-pubsub-emulator'
+    image: messagebird/gcloud-pubsub-emulator:latest
+    ports:
+      - "8085:8681"
+    environment:
+      - PUBSUB_PROJECT1=test-project,topic1:topic1-sub,topic2:t2-s1:t2-s2
+

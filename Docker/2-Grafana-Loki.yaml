@@ -1,72 +1,39 @@
-version: "3"
-
-volumes:
-    prometheus_data: {}
-    grafana_data: {}
-
-networks:
-  loki:
+version: '3'
 
 services:
   loki:
-    image: grafana/loki:2.9.0
+    container_name: loki
+    image: grafana/loki:latest
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
-    networks:
-      - loki
-    restart: 'unless-stopped'
+    # volumes:
+    #   - ./loki-config/:/etc/loki/
+    healthcheck:
+      test: wget =1 --tries=1 -O- http://localhost:3100/ready
+      interval: 3s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
 
   promtail:
-    image: grafana/promtail:2.9.0
+    container_name: promtail
+    image: grafana/promtail:latest
+    ports:
+      - "9080:9080"
     volumes:
-      - /var/log:/var/log
-    command: -config.file=/etc/promtail/config.yml
-    networks:
-      - loki
-    restart: 'unless-stopped'
+      - ./promtail-config/config.yaml:/etc/promtail/config.yaml
 
   grafana:
-    environment:
-      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    entrypoint:
-      - sh
-      - -euc
-      - |
-        mkdir -p /etc/grafana/provisioning/datasources
-        cat <<EOF > /etc/grafana/provisioning/datasources/ds.yaml
-        apiVersion: 1
-        datasources:
-        - name: Loki
-          type: loki
-          access: proxy
-          orgId: 1
-          url: http://loki:3100
-          basicAuth: false
-          isDefault: true
-          version: 1
-          editable: false
-        EOF
-        /run.sh
+    container_name: grafana
     image: grafana/grafana:latest
+    # volumes:
+    #   - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
     ports:
       - "3000:3000"
-    networks:
+    environment:
+      - gf_paths_provisioning=/etc/grafana/provisioning
+      - gf_auth_anonymous_enabled=true
+      - gf_auth_anonymous_org_role=admin
+    depends_on:
       - loki
-    restart: 'unless-stopped'
-      
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-    ports:
-      - 9090:9090
-    restart: unless-stopped
-    volumes:
-      - ./prometheus:/etc/prometheus
-      - prometheus_data:/prometheus
-  
-  
