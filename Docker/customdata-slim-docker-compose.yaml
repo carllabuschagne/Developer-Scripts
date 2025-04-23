@@ -1,0 +1,28 @@
+version: '3'
+name: customdata-stack
+services:
+
+  rabbitmq:
+    container_name: 'customdata-stack-rabbitmq'
+    image: 'rabbitmq:management'
+    environment:
+      RABBITMQ_DEFAULT_USER: 'guest'
+      RABBITMQ_DEFAULT_PASS: 'guest'
+      RABBITMQ_DEFAULT_VHOST: '/'
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    restart: 'unless-stopped'
+
+  seq:
+    container_name: 'customdata-stack-seq'
+    image: datalust/seq
+    ports:
+      - 8003:80
+      - 5341:5341
+    volumes:
+      - /data/seq:/data
+    environment:
+      ACCEPT_EULA: "Y"
+    restart: 'unless-stopped'
+    
