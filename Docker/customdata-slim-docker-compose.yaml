@@ -3,7 +3,7 @@ name: customdata-stack
 services:
 
   rabbitmq:
-    container_name: 'rabbitmq'
+    container_name: 'customdata-stack-rabbitmq'
     image: 'rabbitmq:management'
     environment:
       RABBITMQ_DEFAULT_USER: 'guest'
@@ -15,6 +15,7 @@ services:
     restart: 'unless-stopped'
 
   seq:
+    container_name: 'customdata-stack-seq'
     image: datalust/seq
     ports:
       - 8003:80
