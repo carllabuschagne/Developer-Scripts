@@ -1,21 +1,20 @@
-version: '3'
+version: "3"
 name: customdata-stack
 services:
-
   rabbitmq:
-    container_name: 'customdata-stack-rabbitmq'
-    image: 'rabbitmq:management'
+    container_name: "customdata-stack-rabbitmq"
+    image: "rabbitmq:management"
     environment:
-      RABBITMQ_DEFAULT_USER: 'guest'
-      RABBITMQ_DEFAULT_PASS: 'guest'
-      RABBITMQ_DEFAULT_VHOST: '/'
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
     ports:
-      - '15672:15672'
-      - '5672:5672'
-    restart: 'unless-stopped'
+      - "15672:15672"
+      - "5672:5672"
+    restart: "unless-stopped"
 
   seq:
-    container_name: 'customdata-stack-seq'
+    container_name: "customdata-stack-seq"
     image: datalust/seq
     ports:
       - 8003:80
@@ -24,20 +23,20 @@ services:
       - /data/seq:/data
     environment:
       ACCEPT_EULA: "Y"
-    restart: 'unless-stopped'
+    restart: "unless-stopped"
 
   redis:
-    container_name: 'customdata-stack-redis-stack'
-    image: 'redis/redis-stack'
+    container_name: "customdata-stack-redis-stack"
+    image: "redis/redis-stack"
     volumes:
-      - './redis:/var/lib/redis'
+      - "./redis:/var/lib/redis"
     ports:
-      - '6379:6379'
-      - '8001:8001'
-    restart: 'unless-stopped'
-    
+      - "6379:6379"
+      - "8001:8001"
+    restart: "unless-stopped"
+
   loki:
-    container_name: 'customdata-stack-loki'
+    container_name: "customdata-stack-loki"
     image: grafana/loki:latest
     ports:
       - "3100:3100"
@@ -52,25 +51,25 @@ services:
       start_period: 10s
 
   promtail:
-    container_name: 'customdata-stack-promtail'
+    container_name: "customdata-stack-promtail"
     image: grafana/promtail:latest
     ports:
       - "9080:9080"
     volumes:
       - ./promtail-config/config.yaml:/etc/promtail/config.yaml
-  
+
   prometheus:
-    container_name: 'customdata-stack-prometheus'
+    container_name: "customdata-stack-prometheus"
     image: prom/prometheus:latest
     ports:
       - "9090:9090"
     command:
-    - --config.file=/etc/prometheus/prometheus.yml
+      - --config.file=/etc/prometheus/prometheus.yml
     volumes:
-    - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
 
   grafana:
-    container_name: 'customdata-stack-grafana'
+    container_name: "customdata-stack-grafana"
     image: grafana/grafana:latest
     # volumes:
     #   - ./grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
