@@ -16,7 +16,7 @@ services:
       - "16686:16686"
     networks:
       - elastic-jaeger
-      
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
     networks:
@@ -37,7 +37,7 @@ services:
 
   hotrod:
     image: jaegertracing/example-hotrod:latest
-    ports: 
+    ports:
       - "8080:8080"
     command: ["all"]
     environment:
