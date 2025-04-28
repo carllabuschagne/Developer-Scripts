@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
     networks:
@@ -33,12 +32,13 @@ services:
     restart: on-failure
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
-    command: [
-      "--es.server-urls=http://elasticsearch:9200",
-      "--es.num-shards=1",
-      "--es.num-replicas=0",
-      "--log-level=error"
-    ]
+    command:
+      [
+        "--es.server-urls=http://elasticsearch:9200",
+        "--es.num-shards=1",
+        "--es.num-replicas=0",
+        "--log-level=error",
+      ]
     depends_on:
       - elasticsearch
 
@@ -70,17 +70,18 @@ services:
     networks:
       - elastic-jaeger
     restart: on-failure
-    command: [
-      "--es.server-urls=http://elasticsearch:9200",
-      "--span-storage.type=elasticsearch",
-      "--log-level=debug"
-    ]
+    command:
+      [
+        "--es.server-urls=http://elasticsearch:9200",
+        "--span-storage.type=elasticsearch",
+        "--log-level=debug",
+      ]
     depends_on:
       - jaeger-agent
 
   hotrod:
     image: jaegertracing/example-hotrod:latest
-    ports: 
+    ports:
       - "8080:8080"
     command: ["all"]
     environment:
