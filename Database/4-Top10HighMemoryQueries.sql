@@ -1,7 +1,7 @@
 
 --4. List top 10 high memory usage queries that currently running in this SQL instance
 
-SELECT 
+SELECT
 	mg.session_id,
 	mg.granted_memory_kb,
 	mg.requested_memory_kb,
@@ -12,9 +12,9 @@ SELECT
 	mg.dop,
 	st.[TEXT],
 	qp.query_plan
-FROM 
+FROM
 	sys.dm_exec_query_memory_grants AS mg CROSS APPLY 
 	sys.dm_exec_sql_text(mg.plan_handle) AS st CROSS APPLY 
-	sys.dm_exec_query_plan(mg.plan_handle) AS qp 
+	sys.dm_exec_query_plan(mg.plan_handle) AS qp
 ORDER BY 
 	mg.required_memory_kb DESC

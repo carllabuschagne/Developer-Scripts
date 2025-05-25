@@ -1,7 +1,7 @@
 
 --3.List top 10 high CPU queries that currently running in this SQL instance
 
-SELECT 
+SELECT
 	s.session_id,
 	r.status,
 	r.blocking_session_id AS 'Blk by',
@@ -21,10 +21,11 @@ SELECT
 	s.program_name,
 	s.last_request_end_time,
 	s.login_time,
-	r.open_transaction_count 
-FROM 
-	sys.dm_exec_sessions AS s JOIN 
+	r.open_transaction_count
+FROM
+	sys.dm_exec_sessions AS s JOIN
 	sys.dm_exec_requests AS r ON r.session_id = s.session_id CROSS APPLY 
-	sys.Dm_exec_sql_text(r.sql_handle) AS st WHERE r.session_id != @@SPID 
+	sys.Dm_exec_sql_text(r.sql_handle) AS st
+WHERE r.session_id != @@SPID
 ORDER BY 
 	r.cpu_time desc
